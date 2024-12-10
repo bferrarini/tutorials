@@ -5,6 +5,7 @@ from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 import copy
 import numpy as np
+from torchsummary import summary
 
 # Definizione dell'autoencoder
 class Autoencoder(nn.Module):
@@ -82,7 +83,7 @@ class ConvAutoencoder(nn.Module):
 
 # Iperparametri
 epochs = 10
-batch_size = 32
+batch_size = 64
 learning_rate = 0.9e-3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -101,6 +102,14 @@ test_loader = torch.utils.data.DataLoader(
 # model = Autoencoder()
 model = ConvAutoencoder()
 model.to(device)
+
+if isinstance(model,Autoencoder):
+    summary(model, (784,))
+else:
+    summary(model, (1, 28, 28))
+
+input()
+
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 criterion = nn.MSELoss()
 
